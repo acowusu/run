@@ -3,39 +3,37 @@
     <p>Google Sheets API Quickstart</p>
 
     <!--Add buttons to initiate auth sequence and sign out-->
-    <button class="btn btn-danger" @click="login" >Login</button>
+    <button class="btn btn-danger" @click="login">Login</button>
 
-    <pre id="content" style="white-space: pre-wrap;"></pre>
+    <pre id="content" style="white-space: pre-wrap"></pre>
   </div>
 </template>
 
 <script>
+import { gapi } from "../gapi";
 export default {
-  name: 'VueAuth',
+  name: "VueAuth",
   data() {
     return {
-      mounted: false,
-       CLIENT_ID : '<YOUR_CLIENT_ID>',
-       API_KEY : '<YOUR_API_KEY>',
-       DISCOVERY_DOCS : ["https://sheets.googleapis.com/$discovery/rest?version:v4"],
-      // Authorization scopes required by the API; multiple scopes can be
-      // included, separated by spaces.
-       SCOPES : "https://www.googleapis.com/auth/spreadsheets.readonly",
-
-    
-    }
+      apiKey: "AIzaSyA-3GMoiyzePFFMEXgpLkhmCxVt7fMXPr8",
+      clientId:
+        "1022323340468-71rlesatm60ud4u72bc7hng12ss5frtr.apps.googleusercontent.com",
+      discoveryDocs: [
+        "https://sheets.googleapis.com/$discovery/rest?version=v4",
+      ],
+      scope: "https://www.googleapis.com/auth/spreadsheets",
+    };
   },
-  methods:{
-
-  login() {
-        this.$gapi.login().then(({ currentUser, hasGrantedScopes }) => {
-          console.log({ currentUser, hasGrantedScopes })
-        })
-      },
-      }
-}
+  methods: {
+    login() {
+      window.gapi.auth2.getAuthInstance().signIn();
+      // this.$gapi.login().then(({ currentUser, hasGrantedScopes }) => {
+      //   console.log({ currentUser, hasGrantedScopes });
+      // });
+    },
+  },
+};
 </script>
 
 <style>
-
 </style>

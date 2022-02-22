@@ -61,24 +61,29 @@ export default {
       this.$refs.count.next();
 
       this.$refs.average.addValue(this.$refs.timer.micros);
+      this.addRecord([this.$refs.timer.micros / 1000]);
       this.$refs.timer.reset();
       this.$refs.timer.start();
     },
-    addRecord(values) {
+    async addRecord(values) {
       var body = {
-        values: values,
+        values: [values],
       };
-       this.$gapi.client.sheets.spreadsheets.values
-        .append({
-          spreadsheetId: "1TPK6NMeNMkV5vwNuQSZ5tXdqRkoZSskRqEGnmzG9JIs",
-          range: "A1:C1000000",
-          valueInputOption: "RAW",
-          resource: body,
-        })
-        .then((response) => {
-          var result = response.result;
-          console.log(`${result.updates.updatedCells} cells appended.`);
-        });
+      // this.$gapi.client.load(
+      //   "https://sheets.googleapis.com/$discovery/rest?version=v4"
+      // );
+      console.log(window.gapi.auth2.getAuthInstance().isSignedIn.get());
+      const client = window.gapi.client;
+      console.log(client);
+      const response = await client.sheets.spreadsheets.values.append({
+        spreadsheetId: "1TPK6NMeNMkV5vwNuQSZ5tXdqRkoZSskRqEGnmzG9JIs",
+        range: "A1:A1000000",
+        valueInputOption: "RAW",
+        resource: body,
+      });
+
+      var result = response.result;
+      console.log(`${result.updates.updatedCells} cells appended.`);
     },
   },
 };
